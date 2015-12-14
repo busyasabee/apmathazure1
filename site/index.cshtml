@@ -1,8 +1,81 @@
 @{
-var txt = DateTime.Now; 
+    System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+    customCulture.NumberFormat.NumberDecimalSeparator = ".";
+
+    System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+
+    var fRequest = Request.Params["f"];
+    var sfRequest = Request.Params["df"];
+    var aRequest = Request.Params["a"];
+    var fValue = 4;
+    var seconds = 1;
+    var sfValue = 75;
+    var aValue = 1;
+    var clear = int.TryParse(fRequest, out fValue);
+    var clear2 = int.TryParse(sfRequest, out sfValue);
+    var clear3 = int.TryParse(aRequest, out aValue);
+    var errorMessage1 = "no frequency of the signal provided";
+    var errorMessage2 = "no sampling frequency provided";
+    var errorMessage3 = "no amplitude provided";
+    var time = seconds * sfValue + 1;
+    double[] data = new double[time];
+    double[] args = new double[time];
+    for (int index = 0; index < time; index++)
+    { // Вычисляем данные для всего массива.
+        args[index] = (Math.PI * 2 * fValue / sfValue) * index;
+        data[index] = aValue*Math.Sin((Math.PI * 2 * fValue / sfValue) * index);//Sine(index, Math.PI * 2 * 2.0 / 75); // Период разделенный на частоту дискретизации.
+
+    }
+
 }
 <html>
-	<body>
-		<p>The dateTime is @txt</p>
-	</body>
+<head>
+    <script type="text/javascript"
+            src="https://www.google.com/jsapi?autoload={
+            'modules':[{
+              'name':'visualization',
+              'version':'1',
+              'packages':['corechart']
+            }]
+          }"></script>
+
+    <script type="text/javascript">
+        google.setOnLoadCallback(drawChart);
+        @if (!clear)
+        {
+            Response.Write(String.Format("alert({0});", errorMessage1));
+        }
+         @if(!clear2){
+             Response.Write(String.Format("alert({0});", errorMessage2));
+         }
+          @if (!clear3)
+          {
+              Response.Write(String.Format("alert({0});", errorMessage3));
+          }
+
+      function drawChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('number', 'x');
+          data.addColumn('number', 'Asin(wt)');
+          var i;
+          @for(var i=0; i<@time; i++){
+              @:data.addRow([@args[i],@data[i]])
+          }
+         
+
+        var options = {
+          title: 'Sinusoidal oscillations',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+<body>
+    <div id="curve_chart" style="width: 1400px; height: 500px"></div>
+</body>
 </html>
