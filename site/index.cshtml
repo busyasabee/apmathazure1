@@ -21,9 +21,9 @@
     double[] data = new double[time];
     double[] args = new double[time];
     for (int index = 0; index < time; index++)
-    { // Вычисляем данные для всего массива.
+    { 
         args[index] = (Math.PI * 2 * fValue / sfValue) * index;
-        data[index] = aValue*Math.Sin((Math.PI * 2 * fValue / sfValue) * index);//Sine(index, Math.PI * 2 * 2.0 / 75); // Период разделенный на частоту дискретизации.
+        data[index] = aValue*Math.Sin((Math.PI * 2 * fValue / sfValue) * index);
 
     }
 
