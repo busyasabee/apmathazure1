@@ -14,9 +14,9 @@
     var clear = int.TryParse(fRequest, out fValue);
     var clear2 = int.TryParse(sfRequest, out sfValue);
     var clear3 = int.TryParse(aRequest, out aValue);
-    var errorMessage1 = "no frequency of the signal provided";
-    var errorMessage2 = "no sampling frequency provided";
-    var errorMessage3 = "no amplitude provided";
+    var errorMessage1 = "no frequency of the signal provided, please input http://apmathazure1.azurewebsites.net?f=5";
+    var errorMessage2 = "no sampling frequency provided, please input http://apmathazure1.azurewebsites.net?df=75";
+    var errorMessage3 = "no amplitude provided, please input http://apmathazure1.azurewebsites.net?a=2";
     var time = seconds * sfValue + 1;
     double[] data = new double[time];
     double[] args = new double[time];
